@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Sports Ticker App 061922</string>
+    <string name="search_hint">Search...</string>
+    <string name="is_favorite">Is Favorite</string>
+</resources>

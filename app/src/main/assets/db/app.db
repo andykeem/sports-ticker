@@ -1,0 +1,12 @@
+INSERT INTO SPORT(1, 'NBA');
+INSERT INTO SPORT(2, 'SOCCER');
+
+INSERT INTO TEAM(1, 'Chicago Bulls', 1);
+INSERT INTO TEAM(1, 'Orlando Magic', 1);
+INSERT INTO TEAM(1, 'NY Nicks', 1);
+
+INSERT INTO TEAM(1, 'FC Barcelona', 2);
+INSERT INTO TEAM(1, 'Real Madrid', 2);
+INSERT INTO TEAM(1, 'Man. City', 2);
+INSERT INTO TEAM(1, 'Chelsea', 2);
+INSERT INTO TEAM(1, 'Arsenal', 2);
