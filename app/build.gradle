@@ -59,4 +59,6 @@ dependencies {
     implementation "io.insert-koin:koin-core:$koin_version" // Koin Core features
     implementation "io.insert-koin:koin-android:$koin_version" // Koin main features for Android
     testImplementation "io.insert-koin:koin-test:$koin_version" // Koin Test features
+
+    implementation('org.jetbrains.kotlinx:kotlinx-datetime:0.3.3')
 }

@@ -16,5 +16,5 @@ interface SportDao {
     fun insertAll(vararg sports: Sport)
 
     @Delete
-    fun delete(sport: Sport)
+    fun delete(vararg sports: Sport)
 }

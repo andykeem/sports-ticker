@@ -4,8 +4,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import loc.example.dev.sportstickerapp061922.db.dao.TeamDao
 import loc.example.dev.sportstickerapp061922.db.entity.Team
-import loc.example.dev.sportstickerapp061922.usecase.GetDatabaseUseCase
 
 interface TeamRepo {
     fun searchTeam(term: String): Flow<List<Team>>
@@ -13,11 +13,8 @@ interface TeamRepo {
 }
 
 class TeamRepository(
-    private val getDatabase: GetDatabaseUseCase
+    private val teamDao: TeamDao
 ) : TeamRepo {
-    private val db = getDatabase()
-    private val teamDao = db.teamDao()
-
     override fun searchTeam(term: String): Flow<List<Team>> {
         return teamDao.getTeamsLikeSport(term).map { it.sortedBy { it.name } }
     }

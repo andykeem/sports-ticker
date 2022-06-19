@@ -1,11 +1,13 @@
 package loc.example.dev.sportstickerapp061922.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import loc.example.dev.sportstickerapp061922.databinding.ActivityMainBinding
+import loc.example.dev.sportstickerapp061922.model.ViewState
 import loc.example.dev.sportstickerapp061922.viewmodel.TickerViewModel
 import loc.example.dev.sportstickerapp061922.widget.TeamAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -42,6 +44,24 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.resultLiveData.observe(this) {
             it?.let { teamAdapter.submitList(it) }
+        }
+
+        viewModel.tickerLiveData.observe(this) {
+            it?.let {
+                when (it) {
+                    is ViewState.Error -> {}
+                    ViewState.Loading -> {}
+                    is ViewState.Loaded -> {
+                        binding.ticker.text = "[${it.data.id}] - ${it.data.name}"
+                    }
+                }
+            }
+        }
+
+        binding.floatingActionButton.setOnClickListener {
+            with(Intent(this, EventActivity::class.java)) {
+                startActivity(this)
+            }
         }
     }
 }

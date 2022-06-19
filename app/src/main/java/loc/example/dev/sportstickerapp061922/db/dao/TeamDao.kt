@@ -13,11 +13,11 @@ interface TeamDao {
     fun insertAll(vararg teams: Team)
 
     @Delete
-    fun delete(team: Team)
+    fun delete(vararg teams: Team)
 
-    @Query("SELECT t.* FROM team t, sport s WHERE t.sport_id = s.id AND s.name LIKE :sport")
+    @Query("SELECT t.* FROM team t INNER JOIN sport s ON (t.sport_id = s.id) WHERE s.name LIKE :sport")
     fun getTeamsLikeSport(sport: String): Flow<List<Team>>
 
     @Update
-    fun update(team: Team)
+    fun update(vararg teams: Team)
 }

@@ -8,8 +8,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import loc.example.dev.sportstickerapp061922.constant.DB_NAME
 import loc.example.dev.sportstickerapp061922.db.AppDatabase
+import loc.example.dev.sportstickerapp061922.db.entity.Event
 import loc.example.dev.sportstickerapp061922.db.entity.Sport
 import loc.example.dev.sportstickerapp061922.db.entity.Team
+import kotlin.time.Duration.Companion.hours
 
 interface GetDatabaseUseCase {
     operator fun invoke(): AppDatabase
@@ -17,22 +19,25 @@ interface GetDatabaseUseCase {
 
 internal class GetDatabaseUseCaseImpl(
     private val ctx: Context,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
+    private val getCurrTime: GetCurrentTimeUseCase
 ) : GetDatabaseUseCase {
+    private lateinit var db: AppDatabase
+    private val eventDao by lazy { db.eventDao() }
+    private val sportDao by lazy { db.sportDao() }
+    private val teamDao by lazy { db.teamDao() }
+
     override fun invoke(): AppDatabase {
-        val db = Room.databaseBuilder(ctx, AppDatabase::class.java, DB_NAME)
+        db = Room.databaseBuilder(ctx, AppDatabase::class.java, DB_NAME)
             .createFromAsset("db/app.db")
             .build()
         scope.launch {
-            importData(db)
+            importData()
         }
         return db
     }
 
-    private suspend fun importData(db: AppDatabase) = withContext(Dispatchers.IO) {
-        val sportDao = db.sportDao()
-        val teamDao = db.teamDao()
-
+    private suspend fun importData() = withContext(Dispatchers.IO) {
         val sports = listOf(
             Sport(1, "NBA"),
             Sport(2, "Soccer")
@@ -42,12 +47,25 @@ internal class GetDatabaseUseCaseImpl(
         val teams = listOf(
             Team(1, "Chicago Bulls", false, 1),
             Team(2, "Orlando Magic", false, 1),
-            Team(3, "NY Nicks'", false, 1),
-            Team(4, "FC Barcelona", false, 2),
-            Team(5, "Real Madrid", false, 2),
-            Team(6, "Chelsea", false, 2),
-            Team(7, "Arsenal", false, 2)
+            Team(3, "NY Knicks", false, 1),
+            Team(4, "LA Lakers", false, 1),
+            Team(5, "Boston Celtics", false, 1),
+            Team(6, "Brooklyn Nets", false, 1),
+            Team(7, "FC Barcelona", false, 2),
+            Team(8, "Real Madrid", false, 2),
+            Team(9, "Chelsea", false, 2),
+            Team(10, "Arsenal", false, 2)
         )
         teamDao.insertAll(*teams.toTypedArray())
+
+        val eventDate = getCurrTime().plus(1.hours)
+        val events = listOf(
+            Event(1, "Chicago Bulls @ Orlando Magic", 1, 2, eventDate, false),
+            Event(2, "Boston Celtics @ Chicago Bulls", 5, 1, eventDate, false),
+            Event(3, "LA Lakers @ Chicago Bulls", 4, 1, eventDate, false),
+            Event(4, "Chicago Bulls @ NY Knicks", 1, 3, eventDate, false),
+            Event(5, "Brooklyn Nets @ Chicago Bulls", 6, 1, eventDate, false)
+        )
+        eventDao.insertAll(*events.toTypedArray())
     }
 }
