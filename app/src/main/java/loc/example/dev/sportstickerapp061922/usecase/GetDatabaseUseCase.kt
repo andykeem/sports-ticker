@@ -64,7 +64,11 @@ internal class GetDatabaseUseCaseImpl(
             Event(2, "Boston Celtics @ Chicago Bulls", 5, 1, eventDate, false),
             Event(3, "LA Lakers @ Chicago Bulls", 4, 1, eventDate, false),
             Event(4, "Chicago Bulls @ NY Knicks", 1, 3, eventDate, false),
-            Event(5, "Brooklyn Nets @ Chicago Bulls", 6, 1, eventDate, false)
+            Event(5, "Brooklyn Nets @ Chicago Bulls", 6, 1, eventDate, false),
+
+            Event(6, "Orlando Magic @ LA Lakers", 2, 4, eventDate, false),
+            Event(7, "LA Lakers @ Boston Celtics", 4, 5, eventDate, false),
+            Event(8, "Chicago Bulls @ LA Lakers", 1, 4, eventDate, false)
         )
         eventDao.insertAll(*events.toTypedArray())
     }
